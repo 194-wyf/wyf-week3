@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyf.dao.HouseMapper">
+
+	
+	<insert id="inserts">
+		insert into house values 
+		<foreach collection="list" item="a" separator=",">
+			(0,#{a.name},#{a.creattime},#{a.phone},#{a.price},#{a.other},#{a.tid})
+		</foreach>
+	</insert>
+	<select id="select" resultType="com.wyf.domain.House">
+		SELECT * FROM house h LEFT JOIN TYPE t ON h.`tid`=t.`tid`
+		<where>
+			<if test="name!=null and name!=''">
+				name like '%${name}%' 
+			</if>
+			<if test="phone!=null and phone!=''">
+				and phone like '%${phone}%' 
+			</if>
+			<if test="tid!=null and tid!=''">
+				and t.tid=${tid}
+			</if>
+			<if test="p1=null and p1!=''">
+				and price &gt;=${p1} 
+			</if>
+			<if test="p2=null and p2!=''">
+				and price &lt;=${p2} 
+			</if>
+			<if test="d1=null and d1!=''">
+				and creattime &gt;=#{d1} 
+			</if>
+			<if test="d2=null and d2!=''">
+				and creattime &lt;=${d2} 
+			</if>
+		</where>
+	
+	</select>
+	
+</mapper>
